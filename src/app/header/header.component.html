@@ -1,3 +1,11 @@
 <div class = "search">
-    pesquisamos
+    <form [formGroup]="albumSearch" (ngSubmit)="getAlbum(albumSearch.value.artist)">
+        <mat-form-field appearance="standard">
+            <input matInput placeholder="Artista?" formControlName="artist">
+        </mat-form-field>
+        <button mat-button type="submit">
+            <span *ngIf="!loading">Search</span>
+            <mat-spinner *ngIf="loading"></mat-spinner>
+        </button>
+    </form>
 </div>

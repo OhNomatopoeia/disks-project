@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import type { AlbumEntry, Album, Track, Video } from './types'
 
 interface APIAlbum {
@@ -28,6 +29,7 @@ interface AlbumReleases{
   providedIn: 'root'
 })
 export class ListingService {
+  albumSubject: Subject<AlbumEntry[]> = new Subject();
 
   constructor() { }
 
@@ -38,7 +40,7 @@ export class ListingService {
       cover: apiAlbum.images[0].uri,
       genre: apiAlbum.genres,
       trackList: apiAlbum.tracklist,
-      video: apiAlbum.videos.map(video=> video.uri),
+      video: apiAlbum.videos?.map(video=> video.uri),
       }
   }
 
@@ -49,11 +51,11 @@ export class ListingService {
     }
   }
 
-  async getAlbuns(): Promise <AlbumEntry[]>{
-    const albumListRequest = await fetch('https://disks-project.herokuapp.com/disks?artist=the%20national');
+  async getAlbuns(name: string): Promise <AlbumEntry[]>{
+    const albumListRequest = await fetch(`https://disks-project.herokuapp.com/disks?artist=${name}`);
     const apiAlbuns = await albumListRequest.json() as AlbumReleases;
     const album = apiAlbuns.releases.map(this.adaptAlbum);
-
+    this.albumSubject.next(album);
     return album;
   }
 

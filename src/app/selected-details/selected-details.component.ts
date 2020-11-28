@@ -18,27 +18,29 @@ export class SelectedDetailsComponent implements OnInit {
   genre: string[] = [];
   tracks: Track[] = [];
   videos: SafeResourceUrl[] = [];
+  loading: boolean = false;
 
   private activeAlbum?: Album;
 
   constructor(private aRoute: ActivatedRoute,
-    private detailService: DetailsService,
     private listingService: ListingService,
     private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.aRoute.paramMap.subscribe(async (paramMap) => {
       const id = paramMap.get('albumId') || '';
-
+      this.loading = true;
       this.activeAlbum = await this.listingService.getAlbumById(id);
-
-      console.log (this.activeAlbum,'active Album')
+      this.loading = false;
       this.title = this.activeAlbum.title;
       this.year = this.activeAlbum.year;
       this.cover = this.activeAlbum.cover;
       this.genre = this.activeAlbum.genre;
       this.tracks = this.activeAlbum.trackList;
-      this.videos = this.activeAlbum.video.map(video => this.sanitizer.bypassSecurityTrustResourceUrl(video));
+      if (this.activeAlbum.video){
+        this.videos = this.activeAlbum.video.map(video => this.sanitizer.bypassSecurityTrustResourceUrl(video));
+      }
+      
     });
 
   }

@@ -1,5 +1,8 @@
-<ul>
+<ul *ngIf="albumLinks.length!=0">
     <mat-list *ngFor="let link of albumLinks">
         <mat-list-item><a [routerLink]="link.url">{{link.text}}</a></mat-list-item>
     </mat-list>
 </ul>
+<div *ngIf="albumLinks.length==0">
+    There are no albuns here
+</div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ListingService } from '../listing.service';
 
 interface Link {
@@ -19,14 +20,13 @@ export class SidebarComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    const albums = await this.listingService.getAlbuns();
-
-    this.albumLinks = albums.map((album) =>{
-      return {
-        text: album.name,
-        url: `selected-album/${album.id}`
-      }
-    });
+    this.listingService.albumSubject.subscribe(albums =>
+       this.albumLinks = albums.map((album) =>{
+        return {
+          text: album.name,
+          url: `selected-album/${album.id}`
+        }
+      }) )
   }
 
 }
