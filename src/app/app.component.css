@@ -1,0 +1,8 @@
+body{
+    display: flex;
+    
+}
+
+.toggle-button{
+    z-index:1000;
+}

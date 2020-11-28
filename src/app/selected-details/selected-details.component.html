@@ -1,0 +1,17 @@
+<h1> {{title}} {{year}} </h1>
+<h2> {{genre}}</h2>
+<div class = "album-body">
+    <div class="album-cover"><img [src]="cover"></div>
+    <mat-list class="track-listing">
+        <mat-list-item *ngFor="let track of tracks;">
+            <div>{{track.position}} . {{track.title}} - {{track.duration}}</div>
+        </mat-list-item>
+    </mat-list>
+    <div class ="video-container">
+        <div *ngFor = "let video of videos">
+            <iframe width="560" height="315" [src]="video"></iframe>
+        </div>
+    </div>
+    
+    
+</div>
